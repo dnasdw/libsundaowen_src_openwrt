@@ -7,6 +7,7 @@ extern int UMain(int argc, UChar* argv[]);
 
 int main(int argc, char* argv[])
 {
+	SetLocale();
 	int nArgc = 0;
 	UChar** pArgv = nullptr;
 #if SDW_PLATFORM == SDW_PLATFORM_WINDOWS
