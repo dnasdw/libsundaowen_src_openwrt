@@ -93,4 +93,90 @@ wstring AToW(const string& a_sString);
 #define AToU(x) string(x)
 #endif
 
+template<typename T>
+T Replace(const T& a_sString, typename T::value_type a_cSubChar, typename T::value_type a_cReplacement)
+{
+	T sString = a_sString;
+	replace(sString.begin(), sString.end(), a_cSubChar, a_cReplacement);
+	return sString;
+}
+
+template<typename T>
+T Replace(const T& a_sString, typename T::value_type a_cSubChar, const T& a_sReplacement)
+{
+	T sString = a_sString;
+	typename T::size_type uPos = 0;
+	while ((uPos = sString.find(a_cSubChar, uPos)) != T::npos)
+	{
+		sString.replace(uPos, 1, a_sReplacement);
+		uPos += a_sReplacement.size();
+	}
+	return sString;
+}
+
+template<typename T>
+T Replace(const T& a_sString, typename T::value_type a_cSubChar, const typename T::value_type* a_pReplacement)
+{
+	if (a_pReplacement == nullptr)
+	{
+		return a_sString;
+	}
+	else
+	{
+		return Replace(a_sString, a_cSubChar, T(a_pReplacement));
+	}
+}
+
+template<typename T>
+T Replace(const T& a_sString, const T& a_sSubString, const T& a_sReplacement)
+{
+	T sString = a_sString;
+	typename T::size_type uPos = 0;
+	while ((uPos = sString.find(a_sSubString, uPos)) != T::npos)
+	{
+		sString.replace(uPos, a_sSubString.size(), a_sReplacement);
+		uPos += a_sReplacement.size();
+	}
+	return sString;
+}
+
+template<typename T>
+T Replace(const T& a_sString, const T& a_sSubString, const typename T::value_type* a_pReplacement)
+{
+	if (a_pReplacement == nullptr)
+	{
+		return a_sString;
+	}
+	else
+	{
+		return Replace(a_sString, a_sSubString, T(a_pReplacement));
+	}
+}
+
+template<typename T>
+T Replace(const T& a_sString, const typename T::value_type* a_pSubString, const T& a_sReplacement)
+{
+	if (a_pSubString == nullptr)
+	{
+		return a_sString;
+	}
+	else
+	{
+		return Replace(a_sString, T(a_pSubString), a_sReplacement);
+	}
+}
+
+template<typename T>
+T Replace(const T& a_sString, const typename T::value_type* a_pSubString, const typename T::value_type* a_pReplacement)
+{
+	if (a_pSubString == nullptr || a_pReplacement == nullptr)
+	{
+		return a_sString;
+	}
+	else
+	{
+		return Replace(a_sString, T(a_pSubString), T(a_pReplacement));
+	}
+}
+
 #endif	// LIBSUNDAOWEN_SDW_STRING_H_

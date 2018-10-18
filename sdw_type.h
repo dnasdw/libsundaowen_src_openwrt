@@ -9,8 +9,14 @@
 #if defined(SDW_MAIN)
 #include <shellapi.h>
 #endif
+#else
+#if SDW_PLATFORM == SDW_PLATFORM_MACOS
+#include <mach-o/dyld.h>
+#endif
+#include <unistd.h>
 #endif
 
+#include <climits>
 #include <clocale>
 #if SDW_COMPILER != SDW_COMPILER_MSC || (SDW_COMPILER == SDW_COMPILER_MSC && SDW_COMPILER_VERSION >= 1600)
 #include <cstdint>
@@ -25,13 +31,18 @@ typedef unsigned int       uint32_t;
 typedef unsigned long long uint64_t;
 #endif
 #include <cstdio>
+#include <cstdlib>
 #if SDW_COMPILER == SDW_COMPILER_CLANG || (SDW_COMPILER == SDW_COMPILER_MSC && SDW_COMPILER_VERSION >= 1600) || (SDW_COMPILER == SDW_COMPILER_GNUC && SDW_COMPILER_VERSION >= 50400)
 #include <codecvt>
 #endif
+#include <map>
 #include <regex>
 #include <string>
 
 using namespace std;
+#if SDW_COMPILER == SDW_COMPILER_MSC && SDW_COMPILER_VERSION < 1600
+using namespace std::tr1;
+#endif
 
 typedef int8_t n8;
 typedef int16_t n16;
