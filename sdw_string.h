@@ -93,6 +93,11 @@ wstring AToW(const string& a_sString);
 #define AToU(x) string(x)
 #endif
 
+string FormatV(const char* a_szFormat, va_list a_vaList);
+wstring FormatV(const wchar_t* a_szFormat, va_list a_vaList);
+string Format(const char* a_szFormat, ...);
+wstring Format(const wchar_t* a_szFormat, ...);
+
 template<typename T>
 T Replace(const T& a_sString, typename T::value_type a_cSubChar, typename T::value_type a_cReplacement)
 {

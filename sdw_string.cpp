@@ -148,3 +148,37 @@ wstring AToW(const string& a_sString)
 	return U8ToW(a_sString);
 }
 #endif
+
+string FormatV(const char* a_szFormat, va_list a_vaList)
+{
+	static const int c_nFormatBufferSize = 0x100000;
+	static char c_szBuffer[c_nFormatBufferSize] = {};
+	vsnprintf(c_szBuffer, c_nFormatBufferSize, a_szFormat, a_vaList);
+	return c_szBuffer;
+}
+
+wstring FormatV(const wchar_t* a_szFormat, va_list a_vaList)
+{
+	static const int c_nFormatBufferSize = 0x100000;
+	static wchar_t c_szBuffer[c_nFormatBufferSize] = {};
+	vswprintf(c_szBuffer, c_nFormatBufferSize, a_szFormat, a_vaList);
+	return c_szBuffer;
+}
+
+string Format(const char* a_szFormat, ...)
+{
+	va_list vaList;
+	va_start(vaList, a_szFormat);
+	string sFormatted = FormatV(a_szFormat, vaList);
+	va_end(vaList);
+	return sFormatted;
+}
+
+wstring Format(const wchar_t* a_szFormat, ...)
+{
+	va_list vaList;
+	va_start(vaList, a_szFormat);
+	wstring sFormatted = FormatV(a_szFormat, vaList);
+	va_end(vaList);
+	return sFormatted;
+}
