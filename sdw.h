@@ -4,6 +4,7 @@
 #include "sdw_platform.h"
 #include "sdw_type.h"
 
+#include "sdw_file.h"
 #include "sdw_main.h"
 #include "sdw_module.h"
 #include "sdw_string.h"

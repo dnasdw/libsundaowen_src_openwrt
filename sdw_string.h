@@ -179,4 +179,249 @@ T Replace(const T& a_sString, const typename T::value_type* a_pSubString, const 
 	}
 }
 
+template<typename T>
+vector<T> Split(const T& a_sString, const T& a_sSeparator)
+{
+	vector<T> vString;
+	for (typename T::size_type uOffset = 0; uOffset < a_sString.size(); uOffset += a_sSeparator.size())
+	{
+		typename T::size_type uPos = a_sString.find(a_sSeparator, uOffset);
+		if (uPos != T::npos)
+		{
+			vString.push_back(a_sString.substr(uOffset, uPos - uOffset));
+			uOffset = uPos;
+		}
+		else
+		{
+			vString.push_back(a_sString.substr(uOffset));
+			break;
+		}
+	}
+	if (vString.empty())
+	{
+		vString.push_back(a_sString);
+	}
+	return vString;
+}
+
+template<typename T>
+vector<T> Split(const T& a_sString, const typename T::value_type* a_pSeparator)
+{
+	if (a_pSeparator == nullptr)
+	{
+		vector<T> vString;
+		vString.push_back(a_sString);
+		return vString;
+	}
+	else
+	{
+		return Split(a_sString, T(a_pSeparator));
+	}
+}
+
+template<typename T>
+vector<T> SplitOf(const T& a_sString, const T& a_sSeparatorSet)
+{
+	vector<T> vString;
+	for (typename T::const_iterator it = a_sString.begin(); it != a_sString.end(); ++it)
+	{
+		typename T::const_iterator itPos = find_first_of(it, a_sString.end(), a_sSeparatorSet.begin(), a_sSeparatorSet.end());
+		if (itPos != a_sString.end())
+		{
+			vString.push_back(a_sString.substr(it - a_sString.begin(), itPos - it));
+			it = itPos;
+		}
+		else
+		{
+			vString.push_back(a_sString.substr(it - a_sString.begin()));
+			break;
+		}
+	}
+	if (vString.empty())
+	{
+		vString.push_back(a_sString);
+	}
+	return vString;
+}
+
+template<typename T>
+vector<T> SplitOf(const T& a_sString, const typename T::value_type* a_pSeparatorSet)
+{
+	if (a_pSeparatorSet == nullptr)
+	{
+		vector<T> vString;
+		vString.push_back(a_sString);
+		return vString;
+	}
+	else
+	{
+		return SplitOf(a_sString, T(a_pSeparatorSet));
+	}
+}
+
+template<typename T>
+vector<T> RegexSplitWith(const T& a_sString, const T& a_sSeparatorSet)
+{
+	vector<T> vString;
+	basic_regex<typename T::value_type> rgx(a_sSeparatorSet, regex_constants::ECMAScript);
+	match_results<typename T::const_iterator> match;
+	typename T::size_type uPos0 = 0;
+	typename T::size_type uPos1 = 0;
+	while (regex_search(a_sString.begin() + uPos1, a_sString.end(), match, rgx))
+	{
+		uPos1 += match.position();
+		if (uPos1 != uPos0)
+		{
+			vString.push_back(a_sString.substr(uPos0, uPos1 - uPos0));
+			uPos0 = uPos1;
+		}
+		uPos1 += match.length();
+	}
+	if (uPos0 != a_sString.size())
+	{
+		vString.push_back(a_sString.substr(uPos0));
+	}
+	if (vString.empty())
+	{
+		vString.push_back(a_sString);
+	}
+	return vString;
+}
+
+template<typename T>
+vector<T> RegexSplitWith(const T& a_sString, const typename T::value_type* a_pSeparatorSet)
+{
+	if (a_pSeparatorSet == nullptr)
+	{
+		vector<T> vString;
+		vString.push_back(a_sString);
+		return vString;
+	}
+	else
+	{
+		return RegexSplitWith(a_sString, T(a_pSeparatorSet));
+	}
+}
+
+template<typename T>
+vector<T> RegexSplitWithCut(const T& a_sString, const T& a_sSeparatorSet)
+{
+	vector<T> vString;
+	basic_regex<typename T::value_type> rgx(a_sSeparatorSet, regex_constants::ECMAScript);
+	match_results<typename T::const_iterator> match;
+	typename T::size_type uPos0 = 0;
+	typename T::size_type uPos1 = 0;
+	while (regex_search(a_sString.begin() + uPos1, a_sString.end(), match, rgx))
+	{
+		uPos1 += match.position();
+		typename T::size_type uSize = match.length();
+		if (uPos1 != uPos0)
+		{
+			vString.push_back(a_sString.substr(uPos0, uPos1 - uPos0));
+		}
+		vString.push_back(a_sString.substr(uPos1, uSize));
+		uPos0 = uPos1 + uSize;
+		uPos1 = uPos0;
+	}
+	if (uPos0 != a_sString.size())
+	{
+		vString.push_back(a_sString.substr(uPos0));
+	}
+	if (vString.empty())
+	{
+		vString.push_back(a_sString);
+	}
+	return vString;
+}
+
+template<typename T>
+vector<T> RegexSplitWithCut(const T& a_sString, const typename T::value_type* a_pSeparatorSet)
+{
+	if (a_pSeparatorSet == nullptr)
+	{
+		vector<T> vString;
+		vString.push_back(a_sString);
+		return vString;
+	}
+	else
+	{
+		return RegexSplitWithCut(a_sString, T(a_pSeparatorSet));
+	}
+}
+
+template<typename T>
+bool StartWith(const T& a_sString, const T& a_sPrefix, u32 a_uStart = 0)
+{
+	if (a_uStart > static_cast<u32>(a_sString.size()))
+	{
+		return false;
+	}
+	else
+	{
+		return a_sString.compare(a_uStart, a_sPrefix.size(), a_sPrefix) == 0;
+	}
+}
+
+template<typename T>
+bool StartWith(const T& a_sString, const typename T::value_type* a_pPrefix, u32 a_uStart = 0)
+{
+	if (a_pPrefix == nullptr)
+	{
+		return false;
+	}
+	else
+	{
+		return StartWith(a_sString, T(a_pPrefix), a_uStart);
+	}
+}
+
+template<typename T>
+bool EndWith(const T& a_sString, const T& a_sSuffix)
+{
+	if (a_sString.size() < a_sSuffix.size())
+	{
+		return false;
+	}
+	else
+	{
+		return a_sString.compare(a_sString.size() - a_sSuffix.size(), a_sSuffix.size(), a_sSuffix) == 0;
+	}
+}
+
+template<typename T>
+bool EndWith(const T& a_sString, const typename T::value_type* a_pSuffix)
+{
+	if (a_pSuffix == nullptr)
+	{
+		return false;
+	}
+	else
+	{
+		return EndWith(a_sString, T(a_pSuffix));
+	}
+}
+
+template<typename T>
+T Trim(const T& a_sString)
+{
+	typename T::size_type uSize = a_sString.size();
+	typename T::size_type uPos = 0;
+	while (uPos < uSize && a_sString[uPos] >= 0 && a_sString[uPos] <= static_cast<typename T::value_type>(' '))
+	{
+		uPos++;
+	}
+	while (uPos < uSize && a_sString[uSize - 1] >= 0 && a_sString[uSize - 1] <= static_cast<typename T::value_type>(' '))
+	{
+		uSize--;
+	}
+	if (uPos > 0 || uSize < a_sString.size())
+	{
+		return a_sString.substr(uPos, uSize - uPos);
+	}
+	else
+	{
+		return a_sString;
+	}
+}
+
 #endif	// LIBSUNDAOWEN_SDW_STRING_H_
