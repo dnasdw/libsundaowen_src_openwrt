@@ -38,6 +38,7 @@ typedef unsigned long long uint64_t;
 #include <map>
 #include <regex>
 #include <string>
+#include <unordered_set>
 
 using namespace std;
 #if SDW_COMPILER == SDW_COMPILER_MSC && SDW_COMPILER_VERSION < 1600

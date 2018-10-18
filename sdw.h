@@ -3,6 +3,7 @@
 
 #include "sdw_platform.h"
 #include "sdw_type.h"
+#include "sdw_define.h"
 
 #include "sdw_file.h"
 #include "sdw_main.h"
