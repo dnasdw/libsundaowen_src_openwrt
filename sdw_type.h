@@ -18,6 +18,7 @@
 
 #include <climits>
 #include <clocale>
+#include <cstdarg>
 #if SDW_COMPILER != SDW_COMPILER_MSC || (SDW_COMPILER == SDW_COMPILER_MSC && SDW_COMPILER_VERSION >= 1600)
 #include <cstdint>
 #else
