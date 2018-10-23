@@ -6,6 +6,8 @@
 #if SDW_PLATFORM == SDW_PLATFORM_WINDOWS
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
+#include <fcntl.h>
+#include <io.h>
 #if defined(SDW_MAIN)
 #include <shellapi.h>
 #endif
@@ -15,6 +17,7 @@
 #endif
 #include <unistd.h>
 #endif
+#include <sys/stat.h>
 
 #include <climits>
 #include <clocale>
